@@ -10,22 +10,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class GpsReader {
+public class HeadingReader {
 
-    private final Logger logger = LoggerFactory.getLogger(GpsReader.class);
+    private final Logger logger = LoggerFactory.getLogger(HeadingReader.class);
 
     private ExecutorService executorService;
     private Process process;
     private boolean stopRequested;
 
-    private float latitude;
-    private float longitude;
-    private int accuracyMm;
+    private float heading;
 
     public void start() {
         stopRequested = false;
         executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(new GpsReaderRunnable());
+        executorService.execute(new HeadingReaderRunnable());
     }
 
     public void stop() {
@@ -38,39 +36,32 @@ public class GpsReader {
         }
     }
 
-    public float getLatitude() {
-        return latitude;
+    public float getHeading() {
+        return heading;
     }
 
-    public float getLongitude() {
-        return longitude;
-    }
-
-    public int getAccuracyMm() {
-        return accuracyMm;
-    }
-
-    private class GpsReaderRunnable implements Runnable {
+    private class HeadingReaderRunnable implements Runnable {
 
         @Override
         public void run() {
             try {
-                process = new ProcessBuilder("python3", "gpslogger.py").start();
+                process = new ProcessBuilder(
+                    "python3", "i2clogger.py",
+                    "--calibrationData", "233,255,224,255,225,255,167,1,181,1,133,1,255,255,254,255,255,255,232,3,90,2"
+                    ).start();
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while (process.isAlive() && !stopRequested) {
                     final String line = bufferedReader.readLine();
                     if (line != null) {
-                        final String[] positionString = line.split("\t");
-                        if (positionString.length == 3) {
-                            latitude = Float.parseFloat(positionString[0]);
-                            longitude = Float.parseFloat(positionString[1]);
-                            accuracyMm = Integer.parseInt(positionString[2]);
+                        final String[] headingString = line.split("\t");
+                        if (headingString.length == 1) {
+                            heading = Float.parseFloat(headingString[0]);
                         }
                     }
                 }
                 process.destroy();
             } catch (Exception e) {
-                logger.warn("Couldn't get GPS Position", e);;
+                logger.warn("Couldn't get Heading", e);;
             }
         }
     }
