@@ -1,0 +1,64 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ch.swisscheese38</groupId>
+  <artifactId>javamower</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <properties>
+    <!-- dependencies versions -->
+    <logback.version>1.5.6</logback.version>
+    <slf4j.version>2.0.13</slf4j.version>
+    <!-- build plugins versions -->
+    <exec-maven-plugin.version>3.2.0</exec-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${slf4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>org.geotools</groupId>
+      <artifactId>gt-referencing</artifactId>
+      <version>31.0</version>
+    </dependency>
+    -->
+  </dependencies>
+  
+  <!--
+  <repositories>
+    <repository>
+    <id>osgeo</id>
+    <name>OSGeo Release Repository</name>
+    <url>https://repo.osgeo.org/repository/release/</url>
+    <snapshots><enabled>false</enabled></snapshots>
+    <releases><enabled>true</enabled></releases>
+    </repository>
+  </repositories>
+  -->
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>${exec-maven-plugin.version}</version>
+        <configuration>
+          <mainClass>ch.swisscheese38.javamower.Main</mainClass>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
