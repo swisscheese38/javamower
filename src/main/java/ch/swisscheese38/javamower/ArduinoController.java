@@ -32,7 +32,7 @@ public class ArduinoController implements Motor {
         return leftWheelVelocity;
     }
 
-    public void start() {
+    public ArduinoController start() {
         serialPort = Stream.of(SerialPort.getCommPorts())
             .filter(sp -> VENDOR_ID == sp.getVendorID())
             .filter(sp -> PRODUCT_ID == sp.getProductID())
@@ -40,6 +40,7 @@ public class ArduinoController implements Motor {
             .orElseThrow();
         serialPort.openPort();
         serialPort.addDataListener(new ArduinoDataListener());
+        return this;
     }
 
     public void stop() {

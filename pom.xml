@@ -34,16 +34,13 @@
       <artifactId>jSerialComm</artifactId>
       <version>${jSerialComm.version}</version>
     </dependency>
-    <!--
     <dependency>
       <groupId>org.geotools</groupId>
       <artifactId>gt-referencing</artifactId>
       <version>31.0</version>
     </dependency>
-    -->
   </dependencies>
   
-  <!--
   <repositories>
     <repository>
     <id>osgeo</id>
@@ -53,7 +50,6 @@
     <releases><enabled>true</enabled></releases>
     </repository>
   </repositories>
-  -->
 
   <build>
     <plugins>

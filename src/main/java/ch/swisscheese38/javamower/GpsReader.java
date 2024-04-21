@@ -24,10 +24,11 @@ public class GpsReader implements Gps {
     private float longitude;
     private int accuracyMm;
 
-    public void start() {
+    public GpsReader start() {
         stopRequested = false;
         executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new GpsReaderRunnable());
+        return this;
     }
 
     public void stop() {
@@ -41,12 +42,12 @@ public class GpsReader implements Gps {
     }
 
     @Override
-    public float getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
     @Override
-    public float getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 

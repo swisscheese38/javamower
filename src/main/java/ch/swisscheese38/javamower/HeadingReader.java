@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 public class HeadingReader implements Heading {
 
+    private static final String CALIBRATION_DATA = "233,255,224,255,225,255,167,1,181,1,133,1,255,255,254,255,255,255,232,3,90,2";
+
     private final Logger logger = LoggerFactory.getLogger(HeadingReader.class);
 
     private ExecutorService executorService;
@@ -20,10 +22,11 @@ public class HeadingReader implements Heading {
 
     private float heading;
 
-    public void start() {
+    public HeadingReader start() {
         stopRequested = false;
         executorService = Executors.newSingleThreadExecutor();
         executorService.execute(new HeadingReaderRunnable());
+        return this;
     }
 
     public void stop() {
@@ -42,8 +45,6 @@ public class HeadingReader implements Heading {
     }
 
     private class HeadingReaderRunnable implements Runnable {
-
-        private static final String CALIBRATION_DATA = "233,255,224,255,225,255,167,1,181,1,133,1,255,255,254,255,255,255,232,3,90,2";
 
         @Override
         public void run() {
