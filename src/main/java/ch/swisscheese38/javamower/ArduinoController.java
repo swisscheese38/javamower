@@ -3,26 +3,33 @@ package ch.swisscheese38.javamower;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
 
-public class ArduinoController {
+public class ArduinoController implements Motor {
 
     private static final int VENDOR_ID = 0x1A86;
     private static final int PRODUCT_ID = 0x7523;
+
+    private final Logger logger = LoggerFactory.getLogger(ArduinoController.class);
     
     private SerialPort serialPort;
     
-    private float leftVelocity;
-    private float rightVelocity;
+    private float leftWheelVelocity;
+    private float rightWheelVelocity;
 
-    public float getRightVelocity() {
-        return rightVelocity;
+    @Override
+    public float getRightWheelVelocity() {
+        return rightWheelVelocity;
     }
 
-    public float getLeftVelocity() {
-        return leftVelocity;
+    @Override
+    public float getLeftWheelVelocity() {
+        return leftWheelVelocity;
     }
 
     public void start() {
@@ -52,8 +59,10 @@ public class ArduinoController {
             final String string = new String(event.getReceivedData(), StandardCharsets.UTF_8);
             final String[] splittedString = string.split(" ");
             if (splittedString.length == 2) {
-                leftVelocity = Float.parseFloat(splittedString[0]);
-                rightVelocity = Float.parseFloat(splittedString[1]);
+                leftWheelVelocity = Float.parseFloat(splittedString[0]);
+                rightWheelVelocity = Float.parseFloat(splittedString[1]);
+            } else {
+                logger.warn("Got unexpected data from Arduino: " + string);
             }
         }
     }

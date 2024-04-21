@@ -1,6 +1,7 @@
 import time
 import smbus
 import argparse
+import statistics
 
 from BNO055 import BNO055
 
@@ -13,6 +14,10 @@ bus = smbus.SMBus(1)
 imu = BNO055(bus, calibrationData=calibrationData)
 
 while True:
-    imu.readEul()
-    print(imu.euler['x'], flush=True)
-    time.sleep(0.1)
+    vals = list()
+    for i in range(10):
+        vals.append(imu.readHeadingDegrees())
+        time.sleep(0.01)
+    
+    median = statistics.median(vals)
+    print(median, flush=True)

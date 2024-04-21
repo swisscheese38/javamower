@@ -56,6 +56,9 @@ class BNO055:
         v = twos_complement(intV, 16)
         return v
 
+    def readHeadingDegrees(self):
+        return self.readSingleData(self.BNO055_EUL_HEADING_LSB)/16.0
+
     def readEul(self, degrees = 0):
         x, y, z = self.readData(self.BNO055_EUL_HEADING_LSB)
         if degrees == 0:

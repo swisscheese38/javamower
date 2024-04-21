@@ -11,10 +11,10 @@ public class Main {
         gpsReader.start();
         headingReader.start();
         arduinoController.start();
-        for (int i = 0; i < 10; i++) {
-            System.out.println("GPS Accuracy: " + gpsReader.getAccuracyMm());
+        for (int i = 0; i < 1000; i++) {
+            //System.out.println("GPS Accuracy: " + gpsReader.getAccuracyMm());
             System.out.println("IMU Heading: " + headingReader.getHeading());
-            System.out.println("Left wheel velocity: " + arduinoController.getLeftVelocity());
+            //System.out.println("Left wheel velocity: " + arduinoController.getLeftWheelVelocity());
             Thread.sleep(100);
         }
         

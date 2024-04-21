@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class HeadingReader {
+public class HeadingReader implements Heading {
 
     private final Logger logger = LoggerFactory.getLogger(HeadingReader.class);
 
@@ -36,6 +36,7 @@ public class HeadingReader {
         }
     }
 
+    @Override
     public float getHeading() {
         return heading;
     }

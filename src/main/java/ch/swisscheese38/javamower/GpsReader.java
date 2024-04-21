@@ -9,8 +9,10 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ch.swisscheese38.Gps;
 
-public class GpsReader {
+
+public class GpsReader implements Gps {
 
     private final Logger logger = LoggerFactory.getLogger(GpsReader.class);
 
@@ -38,14 +40,17 @@ public class GpsReader {
         }
     }
 
+    @Override
     public float getLatitude() {
         return latitude;
     }
 
+    @Override
     public float getLongitude() {
         return longitude;
     }
 
+    @Override
     public int getAccuracyMm() {
         return accuracyMm;
     }
