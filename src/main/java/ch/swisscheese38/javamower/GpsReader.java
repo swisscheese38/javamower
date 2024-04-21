@@ -9,8 +9,6 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.swisscheese38.Gps;
-
 
 public class GpsReader implements Gps {
 
@@ -23,6 +21,7 @@ public class GpsReader implements Gps {
     private float latitude;
     private float longitude;
     private int accuracyMm;
+    private FixType fixType;
 
     public GpsReader start() {
         stopRequested = false;
@@ -56,6 +55,11 @@ public class GpsReader implements Gps {
         return accuracyMm;
     }
 
+    @Override
+    public FixType getFixType() {
+        return fixType;
+    }
+
     private class GpsReaderRunnable implements Runnable {
 
         @Override
@@ -65,13 +69,18 @@ public class GpsReader implements Gps {
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while (process.isAlive() && !stopRequested) {
                     final String line = bufferedReader.readLine();
-                    if (line != null) {
-                        final String[] positionString = line.split("\t");
-                        if (positionString.length == 3) {
-                            latitude = Float.parseFloat(positionString[0]);
-                            longitude = Float.parseFloat(positionString[1]);
-                            accuracyMm = Integer.parseInt(positionString[2]);
-                        }
+                    if (line == null) {
+                        logger.warn("Got null data from GPS");
+                        continue;
+                    }
+                    final String[] positionString = line.split("\t");
+                    if (positionString.length == 4) {
+                        latitude = Float.parseFloat(positionString[0]);
+                        longitude = Float.parseFloat(positionString[1]);
+                        accuracyMm = Integer.parseInt(positionString[2]);
+                        fixType = FixType.values()[Integer.parseInt(positionString[3])];
+                    } else {
+                        logger.warn("Got unexpected data from GPS: " + line);
                     }
                 }
                 process.destroy();

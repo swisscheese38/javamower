@@ -8,8 +8,6 @@ import org.geotools.referencing.GeodeticCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.swisscheese38.Gps;
-
 public class NavigationController {
     
     private final Logger logger = LoggerFactory.getLogger(NavigationController.class);
@@ -59,10 +57,12 @@ public class NavigationController {
             try {    
                 geodeticCalculator.setStartingGeographicPoint(gps.getLongitude(), gps.getLatitude());
                 geodeticCalculator.setDestinationGeographicPoint(longitude, latitude);
-                System.out.println("Turn from %s to %s and drive for %s meters".formatted(
+                System.out.println("Turn from %.1f to %.1f degrees and drive for %.2fm (precision: %dmm, %s)".formatted(
                     heading.getHeading(),
                     geodeticCalculator.getAzimuth(),
-                    geodeticCalculator.getOrthodromicDistance()
+                    geodeticCalculator.getOrthodromicDistance(),
+                    gps.getAccuracyMm(),
+                    gps.getFixType()
                 ));
             } catch (Exception e) {
                 logger.warn("Couldn't navigate", e);;

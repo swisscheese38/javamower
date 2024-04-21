@@ -53,11 +53,15 @@ public class HeadingReader implements Heading {
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while (process.isAlive() && !stopRequested) {
                     final String line = bufferedReader.readLine();
-                    if (line != null) {
-                        final String[] headingString = line.split("\t");
-                        if (headingString.length == 1) {
-                            heading = Float.parseFloat(headingString[0]);
-                        }
+                    if (line == null) {
+                        logger.warn("Got null data over I2C");
+                        continue;
+                    }
+                    final String[] headingString = line.split("\t");
+                    if (headingString.length == 1) {
+                        heading = Float.parseFloat(headingString[0]);
+                    } else {
+                        logger.warn("Got unexpected data over I2C: " + line);
                     }
                 }
                 process.destroy();

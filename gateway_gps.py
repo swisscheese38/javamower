@@ -7,6 +7,6 @@ ubxreader = UBXReader(datastream=serialstream, protfilter=2)
 try:
     for (raw_data, msg) in ubxreader:
         if 'NAV-PVT' == msg.identity:
-            print(f'{msg.lat}\t{msg.lon}\t{msg.hAcc}', flush=True)
+            print(f'{msg.lat}\t{msg.lon}\t{msg.hAcc}\t{msg.fixType}', flush=True)
 except KeyboardInterrupt:
     pass
