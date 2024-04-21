@@ -60,7 +60,7 @@ public class GpsReader implements Gps {
         @Override
         public void run() {
             try {
-                process = new ProcessBuilder("python3", "gpslogger.py").start();
+                process = new ProcessBuilder("python3", "gateway_gps.py").start();
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while (process.isAlive() && !stopRequested) {
                     final String line = bufferedReader.readLine();

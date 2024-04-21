@@ -43,13 +43,12 @@ public class HeadingReader implements Heading {
 
     private class HeadingReaderRunnable implements Runnable {
 
+        private static final String CALIBRATION_DATA = "233,255,224,255,225,255,167,1,181,1,133,1,255,255,254,255,255,255,232,3,90,2";
+
         @Override
         public void run() {
             try {
-                process = new ProcessBuilder(
-                    "python3", "i2clogger.py",
-                    "--calibrationData", "233,255,224,255,225,255,167,1,181,1,133,1,255,255,254,255,255,255,232,3,90,2"
-                    ).start();
+                process = new ProcessBuilder("python3", "gateway_i2c.py", "--calibrationData", CALIBRATION_DATA).start();
                 final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
                 while (process.isAlive() && !stopRequested) {
                     final String line = bufferedReader.readLine();

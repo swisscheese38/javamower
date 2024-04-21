@@ -13,11 +13,14 @@ calibrationData = list(map(int, args.calibrationData.split(","))) if args.calibr
 bus = smbus.SMBus(1)
 imu = BNO055(bus, calibrationData=calibrationData)
 
-while True:
-    vals = list()
-    for i in range(10):
-        vals.append(imu.readHeadingDegrees())
-        time.sleep(0.01)
-    
-    median = statistics.median(vals)
-    print(median, flush=True)
+try:    
+    while True:
+        vals = list()
+        for i in range(10):
+            vals.append(imu.readHeadingDegrees())
+            time.sleep(0.01)
+        
+        median = statistics.median(vals)
+        print(median, flush=True)
+except KeyboardInterrupt:
+    pass
